@@ -2,123 +2,253 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>ScriptForge AI – Automation Architect</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#031211">
+<title>ScriptForge AI – Automation Studio</title>
+<meta name="description" content="ScriptForge AI – generate automation scripts for PowerShell, Python, Bash, Azure CLI and Terraform.">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300..800&family=JetBrains+Mono:wght@400..700&family=Material+Symbols+Outlined:wght@300..500&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#f6f7f9;--card:#fff;--ink:#14181f;--mut:#5b6472;--line:#dfe3e9;--acc:#0a7cff;--accink:#fff;--code:#0f1420;--codeink:#e6edf7;--user:#e8f1ff;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0b0e14;--card:#131824;--ink:#e8ecf3;--mut:#94a0b3;--line:#232b3b;--acc:#4da3ff;--accink:#06101f;--code:#070a10;--codeink:#e6edf7;--user:#16263f}}
-:root[data-theme="dark"]{--bg:#0b0e14;--card:#131824;--ink:#e8ecf3;--mut:#94a0b3;--line:#232b3b;--acc:#4da3ff;--accink:#06101f;--code:#070a10;--codeink:#e6edf7;--user:#16263f}
-html{scroll-padding-top:env(safe-area-inset-top,0px)}
+:root{--bg:#031211;--ink:#E8E4D3;--pri:#00AEBB;--mut:rgba(232,228,211,.68);--dim:rgba(232,228,211,.45);--line:rgba(232,228,211,.15);--s1:rgba(232,228,211,.035);--s2:rgba(232,228,211,.07);--p1:rgba(0,174,187,.14);--p2:rgba(0,174,187,.32)}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
-a{color:var(--acc)}
-.wrap{max-width:980px;margin:0 auto;padding:0 20px}
-nav{display:flex;justify-content:space-between;align-items:center;padding:18px 0}
-.logo{font-weight:700;letter-spacing:-.02em}.logo b{color:var(--acc)}
-nav a{margin-left:18px;color:var(--mut);text-decoration:none;font-size:14px}
-.hero{padding:36px 0 26px}
-.hero h1{font-size:clamp(30px,5vw,48px);line-height:1.1;margin:0 0 12px;letter-spacing:-.03em}
-.hero p{color:var(--mut);max-width:620px;margin:0}
-.feat{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:26px 0}
-.feat div{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px}
-.feat h3{margin:0 0 4px;font-size:15px}.feat p{margin:0;color:var(--mut);font-size:13.5px}
-.agent{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;margin-bottom:28px}
-.ahead{padding:12px 16px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;font-weight:600}
-.ahead span{font-weight:400;color:var(--mut);font-size:13px}
-#log{height:min(520px,60vh);overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px}
-.msg{max-width:100%;padding:10px 14px;border-radius:12px;border:1px solid var(--line);white-space:pre-wrap;overflow-wrap:anywhere}
-.msg.user{background:var(--user);align-self:flex-end;max-width:85%}
-.msg.err{color:#c2362b}
-.cb{margin:10px 0;border-radius:10px;overflow:hidden;background:var(--code);white-space:normal}
-.cbh{display:flex;justify-content:space-between;align-items:center;padding:6px 10px;font-size:12px;color:#9fb0c8;border-bottom:1px solid #222c40}
-.cbh button{margin-left:6px}
-.cb pre{margin:0;padding:12px;overflow-x:auto;color:var(--codeink);font:13px/1.5 ui-monospace,Menlo,Consolas,monospace;white-space:pre}
-button{font:inherit;cursor:pointer}
-.sm{background:transparent;color:#cfe0ff;border:1px solid #33415e;border-radius:6px;padding:2px 8px;font-size:12px}
-.chips{display:flex;flex-wrap:wrap;gap:8px;padding:0 16px 12px}
-.chip{background:transparent;border:1px solid var(--line);color:var(--ink);border-radius:99px;padding:5px 12px;font-size:13px}
-.chip:hover{border-color:var(--acc)}
-.bar{display:flex;gap:8px;padding:12px 16px;border-top:1px solid var(--line)}
-textarea{flex:1;resize:none;min-height:46px;max-height:140px;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:10px;padding:10px 12px;font:inherit}
-#send{background:var(--acc);color:var(--accink);border:0;border-radius:10px;padding:0 20px;font-weight:600}
-#send:disabled{opacity:.5;cursor:default}
-footer{color:var(--mut);font-size:13px;padding:6px 0 30px}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.55 Geist,Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+::selection{background:var(--p2)}
+.mi{font-family:"Material Symbols Outlined";font-weight:400;font-size:19px;line-height:1;vertical-align:middle;font-feature-settings:"liga"}
+.mono{font-family:"JetBrains Mono",ui-monospace,Consolas,monospace}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,a:focus-visible,textarea:focus-visible{outline:2px solid var(--pri);outline-offset:2px}
+header{position:fixed;inset:0 0 auto 0;height:60px;z-index:20;background:rgba(3,18,17,.92);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 16px;gap:12px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:600;font-size:17px;letter-spacing:-.01em}
+.brand .ic{width:32px;height:32px;border-radius:7px;background:var(--p1);border:1px solid var(--p2);display:grid;place-items:center;color:var(--pri);box-shadow:0 0 14px var(--p2)}
+.tag{font:600 10px "JetBrains Mono",monospace;padding:2px 7px;border-radius:5px;border:1px solid var(--p2);color:var(--pri);background:var(--s1)}
+.hr{display:flex;align-items:center;gap:10px}
+.who{display:flex;align-items:center;gap:8px;text-align:left}.who b{display:block;font-size:12px;font-weight:500;line-height:1.2}.who small{font:10px "JetBrains Mono",monospace;color:var(--dim)}
+.av{width:32px;height:32px;border-radius:50%;background:var(--p1);border:1px solid var(--p2);display:grid;place-items:center;color:var(--pri)}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:7px 13px;border-radius:9px;border:1px solid var(--line);background:var(--s2);font-size:13px}
+.btn:hover{border-color:var(--pri);color:var(--pri)}
+.btn.pri{background:var(--pri);color:var(--bg);border-color:var(--pri);font-weight:600;box-shadow:0 0 16px var(--p2)}
+.btn.pri:hover{opacity:.9;color:var(--bg)}.btn:disabled{opacity:.5;cursor:default}
+aside{position:fixed;left:0;top:60px;bottom:0;width:236px;border-right:1px solid var(--line);background:var(--bg);padding:14px 10px;display:flex;flex-direction:column;justify-content:space-between;z-index:10;overflow-y:auto}
+.cap{font:10px "JetBrains Mono",monospace;text-transform:uppercase;letter-spacing:.08em;color:var(--dim);margin:0 8px 8px}
+aside nav a{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:9px;color:var(--mut);text-decoration:none;font-size:13px;margin-bottom:3px;border-left:2px solid transparent}
+aside nav a:hover{background:var(--s2);color:var(--ink)}
+aside nav a.on{background:var(--p1);color:var(--pri);border-left-color:var(--pri);font-weight:600}
+.env{padding:10px;border-radius:10px;border:1px solid var(--line);background:var(--s1);margin-bottom:6px}
+.env b{display:flex;align-items:center;gap:7px;font:12px "JetBrains Mono",monospace}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--pri);box-shadow:0 0 8px var(--pri);display:inline-block}
+.dot.busy{animation:pl .7s infinite alternate}@keyframes pl{to{opacity:.25}}
+.dot.err{background:transparent;border:1px dashed var(--ink);box-shadow:none}
+main{margin-left:236px;padding:76px 18px 40px}
+.card{background:var(--s1);border:1px solid var(--line);border-radius:14px;padding:16px;position:relative;overflow:hidden}
+.hero{margin-bottom:14px;display:flex;flex-direction:column;gap:12px}
+.hero::after{content:"";position:absolute;right:-60px;top:-80px;width:300px;height:300px;border-radius:50%;background:var(--p1);filter:blur(60px);pointer-events:none}
+.prow{display:flex;gap:10px;position:relative;z-index:1}
+.pin{flex:1;display:flex;gap:10px;align-items:center;background:var(--bg);border:1px solid var(--line);border-radius:11px;padding:8px 12px}
+.pin:focus-within{border-color:var(--pri);box-shadow:0 0 0 1px var(--p2)}
+.pin label{display:block;font:10px "JetBrains Mono",monospace;color:var(--dim);text-transform:uppercase;letter-spacing:.08em}
+textarea{width:100%;resize:none;background:transparent;border:0;color:var(--ink);font:500 14px/1.45 Geist,sans-serif;outline:0;min-height:42px;max-height:130px;overflow-y:auto}
+textarea::placeholder{color:var(--dim)}
+.opts{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;border-top:1px solid var(--line);padding-top:12px;position:relative;z-index:1}
+.seg{display:flex;gap:2px;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:3px;flex-wrap:wrap}
+.seg button{background:transparent;border:1px solid transparent;border-radius:7px;padding:3px 10px;font:11px "JetBrains Mono",monospace;color:var(--mut)}
+.seg button:hover{color:var(--ink)}
+.seg button.on{background:var(--p1);border-color:var(--p2);color:var(--pri)}
+.rec{display:flex;gap:8px;overflow-x:auto;position:relative;z-index:1;align-items:center}
+.chip{white-space:nowrap;background:var(--s1);border:1px solid var(--line);border-radius:6px;padding:3px 10px;font:11px "JetBrains Mono",monospace;color:var(--mut)}
+.chip:hover{border-color:var(--pri);color:var(--pri)}
+.grid{display:grid;grid-template-columns:minmax(0,1.9fr) minmax(0,1fr);gap:14px;align-items:start}
+.col{display:flex;flex-direction:column;gap:14px;min-width:0}
+.ed{padding:0;background:var(--bg)}
+.tabs{display:flex;justify-content:space-between;align-items:flex-end;padding:6px 8px 0;background:var(--s1);border-bottom:1px solid var(--line);gap:8px}
+.tabs>div{display:flex;gap:2px;overflow-x:auto}
+.tab{background:transparent;border:1px solid transparent;border-bottom:0;border-radius:9px 9px 0 0;padding:8px 14px;font:12px "JetBrains Mono",monospace;color:var(--mut);display:flex;gap:6px;align-items:center}
+.tab.on{background:var(--bg);color:var(--pri);border-color:var(--line);border-top:2px solid var(--pri);font-weight:600}
+.tools{display:flex;gap:6px;padding-bottom:6px}
+.tools .btn{padding:4px 9px;font-size:12px}
+.meta{display:flex;justify-content:space-between;gap:10px;padding:6px 14px;font:11px "JetBrains Mono",monospace;color:var(--dim);border-bottom:1px solid var(--line);flex-wrap:wrap}
+.meta .ok{color:var(--pri)}
+#code{padding:14px;max-height:540px;min-height:260px;overflow:auto;font:12.5px/1.65 "JetBrains Mono",monospace;counter-reset:l;white-space:pre}
+#code .l{display:block;counter-increment:l}
+#code .l::before{content:counter(l);display:inline-block;width:34px;margin-right:14px;text-align:right;color:var(--dim);opacity:.6;user-select:none}
+#code.txt{white-space:pre-wrap;font-family:Geist,sans-serif;font-size:14px;line-height:1.6;counter-reset:none}
+#code.txt .l::before{display:none}
+.empty{color:var(--dim);white-space:normal;font-family:Geist,sans-serif;font-size:14px}
+.term{padding:0}.term .h{display:flex;justify-content:space-between;padding:9px 14px;border-bottom:1px solid var(--line);font:600 12px "JetBrains Mono",monospace;align-items:center;gap:8px}
+#tl{padding:12px 14px;font:12px/1.7 "JetBrains Mono",monospace;color:var(--mut);max-height:170px;overflow:auto;background:var(--bg)}
+#tl i{font-style:normal;color:var(--pri);margin-right:8px}
+.ct{display:flex;align-items:center;gap:8px;font-weight:600;font-size:15px;margin-bottom:8px}.ct .mi{color:var(--pri)}
+.body{font-size:12.5px;color:var(--mut);white-space:pre-wrap;overflow-wrap:anywhere;max-height:210px;overflow:auto}
+.body.empty{color:var(--dim)}
+#core{width:100%;height:130px;display:block;margin:6px 0 10px;border:1px solid var(--line);border-radius:10px;background:var(--bg)}
+.pills{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:6px}
+.pills div{padding:8px 10px;border:1px solid var(--line);border-radius:9px;background:var(--bg)}
+.pills small{display:block;font:10px "JetBrains Mono",monospace;color:var(--dim);text-transform:uppercase}.pills b{font-size:13px;font-weight:500;color:var(--pri)}
+@media(max-width:1100px){.grid{grid-template-columns:1fr}}
+@media(max-width:900px){aside{display:none}main{margin-left:0;padding:76px 12px 30px}.who,.tag{display:none}.prow{flex-direction:column}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
-<div class="wrap">
-<nav><div class="logo">Script<b>Forge</b> AI</div><div><a href="#agent">Agent</a><a href="#how">How it works</a></div></nav>
-<section class="hero">
-<h1>Describe the task.<br>Get a production-ready script.</h1>
-<p>An automation architect for PowerShell, Python, Bash, Azure CLI and Terraform. It returns source code, an EXE build command, logging, security notes and a rollback plan, with no programming needed.</p>
-</section>
-<section class="feat" id="how">
-<div><h3>Picks the language</h3><p>PowerShell, Python, Bash, Terraform or Ansible, whichever fits.</p></div>
-<div><h3>Enterprise quality</h3><p>Retries, logging, validation and least-privilege defaults.</p></div>
-<div><h3>Ships as an EXE</h3><p>PyInstaller, PS2EXE and pkg build commands included.</p></div>
-<div><h3>Safe to deploy</h3><p>Security review and a rollback plan with every answer.</p></div>
-</section>
+<header>
+<div class="brand"><div class="ic"><span class="mi">smart_toy</span></div>ScriptForge AI<span class="tag">ARCHITECT</span></div>
+<div class="hr">
+<button class="btn" id="exp"><span class="mi">archive</span><span>Export script</span></button>
+<button class="btn pri" id="new"><span class="mi">add_circle</span><span>New pipeline</span></button>
+<div class="who"><div class="av"><span class="mi">person</span></div><div><b>Janmejay Mohapatra</b><small>IT Infrastructure Lead</small></div></div>
+</div>
+</header>
 
-<section class="agent" id="agent">
-<div class="ahead">ScriptForge Agent <span id="status">Ready</span></div>
-<div id="log"></div>
-<div class="chips" id="chips"></div>
-<div class="bar">
-<textarea id="in" rows="1" placeholder="e.g. Create 50 Azure AD users from a CSV and email me a report"></textarea>
-<button id="send">Forge</button>
+<aside>
+<div>
+<div class="env"><div class="cap" style="margin:0 0 6px">Agent</div><b><span class="dot" id="dot"></span><span id="st">Ready</span></b></div>
+<div class="cap" style="margin-top:16px">Workspace</div>
+<nav>
+<a class="on" href="#top"><span class="mi">terminal</span>Automation Studio</a>
+<a href="#c-build"><span class="mi">package_2</span>Build &amp; Package</a>
+<a href="#c-sec"><span class="mi">security</span>Security Review</a>
+<a href="#c-roll"><span class="mi">history</span>Rollback Plan</a>
+</nav>
+</div>
+<div class="env" style="margin:0"><div class="cap" style="margin:0 0 4px">Note</div><span style="font-size:12px;color:var(--mut)">Review every generated script and test it outside production first.</span></div>
+</aside>
+
+<main id="top">
+<section class="card hero">
+<div class="prow">
+<div class="pin"><span class="mi" style="color:var(--pri)">auto_awesome</span>
+<div style="flex:1"><label for="q">Describe the automation you need</label>
+<textarea id="q" rows="1" placeholder="e.g. Create 50 Azure AD users from a CSV and email me a report"></textarea></div></div>
+<button class="btn pri" id="go" style="justify-content:center;padding:0 22px"><span class="mi">bolt</span>Synthesize script</button>
+</div>
+<div class="rec"><span class="mono" style="font-size:11px;color:var(--dim)">Recipes</span><span id="chips" style="display:flex;gap:8px"></span></div>
+<div class="opts">
+<div class="seg" data-k="lang"><button class="on">PowerShell</button><button>Batch</button><button>Python</button><button>Bash</button><button>Azure CLI</button><button>Terraform</button></div>
+<div class="seg" data-k="pack"><button>Source only</button><button class="on">Self-contained EXE</button><button>MSI installer</button></div>
+<div class="seg" data-k="plat"><button class="on">Windows</button><button>Ubuntu</button><button>RHEL</button></div>
 </div>
 </section>
-<footer>Always test generated scripts in a non-production environment first.</footer>
+
+<div class="grid">
+<div class="col">
+<div class="card ed">
+<div class="tabs"><div id="tabs"></div>
+<div class="tools"><button class="btn" id="cp"><span class="mi">content_copy</span>Copy</button><button class="btn pri" id="dl"><span class="mi">download</span>Download</button></div></div>
+<div class="meta"><span class="ok" id="m1">Waiting for a task</span><span id="m2">—</span></div>
+<div id="code"><div class="empty">Your script appears here. Describe a task above, choose a language and packaging, then click Synthesize script.</div></div>
+</div>
+<div class="card term"><div class="h"><span><span class="mi" style="color:var(--pri)">terminal</span> Activity log</span></div><div id="tl"></div></div>
 </div>
 
+<div class="col">
+<div class="card"><div class="ct"><span class="mi">account_tree</span>Solution summary</div>
+<canvas id="core"></canvas>
+<div class="pills"><div><small>Language</small><b id="p1">—</b></div><div><small>Packaging</small><b id="p2">—</b></div></div>
+<div class="body empty" id="b-sum">The summary of your solution shows here.</div></div>
+<div class="card" id="c-build"><div class="ct"><span class="mi">inventory_2</span>Build executable</div><div class="body empty" id="b-build">Build commands show here.</div></div>
+<div class="card" id="c-sec"><div class="ct"><span class="mi">security</span>Security review</div><div class="body empty" id="b-sec">Security notes show here.</div></div>
+<div class="card" id="c-roll"><div class="ct"><span class="mi">history</span>Rollback plan</div><div class="body empty" id="b-roll">Recovery steps show here.</div></div>
+</div>
+</div>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
-const API_URL='https://scriptforge-api.janmejay-crazzy.workers.dev'; // <-- paste your Worker URL here
+const API_URL='https://scriptforge-api.janmejay-crazzy.workers.dev'; // your Worker URL
 const EXT={powershell:'ps1',ps1:'ps1',python:'py',py:'py',bash:'sh',sh:'sh',batch:'bat',bat:'bat',terraform:'tf',hcl:'tf',yaml:'yml',yml:'yml',json:'json',javascript:'js',js:'js',vbscript:'vbs',vbs:'vbs'};
-const log=document.getElementById('log'),inp=document.getElementById('in'),send=document.getElementById('send'),st=document.getElementById('status');
-const turns=[];let busy=false,sample=null,dl=null;
-const chips=['Bulk-create Azure AD users from a CSV','Backup SQL databases nightly and prune old files','Disk space monitor that emails alerts (Windows)','Silent-install software on many PCs'];
-chips.forEach(t=>{const b=document.createElement('button');b.className='chip';b.textContent=t;b.onclick=()=>{inp.value=t;go()};document.getElementById('chips').appendChild(b)});
+const $=id=>document.getElementById(id);
+const prefs={lang:'PowerShell',pack:'Self-contained EXE',plat:'Windows'};
+let turns=[],busy=false,view='Script',data={sec:{},code:'',lang:'',full:''};
 
-function el(tag,cls,txt){const e=document.createElement(tag);if(cls)e.className=cls;if(txt!=null)e.textContent=txt;return e}
-function render(node,text){
-  node.textContent='';
-  const parts=text.split(/```/);
-  parts.forEach((p,i)=>{
-    if(i%2===0){if(p.trim()||i===0){const s=el('span',null,p.replace(/\*\*(.+?)\*\*/g,'$1'));node.appendChild(s)}}
-    else{
-      const nl=p.indexOf('\n'),lang=(nl>-1?p.slice(0,nl):p).trim().toLowerCase(),code=nl>-1?p.slice(nl+1):'';
-      const box=el('div','cb'),h=el('div','cbh'),r=el('span',null,lang||'code'),act=el('span');
-      const cp=el('button','sm','Copy'),sv=el('button','sm','Download');
-      cp.onclick=()=>{navigator.clipboard&&navigator.clipboard.writeText(code).then(()=>{cp.textContent='Copied';setTimeout(()=>cp.textContent='Copy',1200)}).catch(()=>{})};
-      sv.onclick=async()=>{if(!dl){return}try{await dl.save({filename:'script.'+(EXT[lang]||'txt'),data:code})}catch(e){}};
-      act.appendChild(cp);if(dl)act.appendChild(sv);h.append(r,act);
-      box.append(h,el('pre',null,code));node.appendChild(box);
-    }
-  });
+document.querySelectorAll('.seg').forEach(s=>s.addEventListener('click',e=>{
+  const b=e.target.closest('button');if(!b)return;
+  s.querySelectorAll('button').forEach(x=>x.classList.remove('on'));b.classList.add('on');prefs[s.dataset.k]=b.textContent;
+}));
+['Bulk-create Azure AD users from a CSV','Back up SQL databases nightly','Disk space monitor with email alerts','Silent-install software on many PCs'].forEach(t=>{
+  const b=document.createElement('button');b.className='chip';b.textContent=t;b.onclick=()=>{$('q').value=t;$('q').focus()};$('chips').appendChild(b)});
+
+function note(msg){const d=document.createElement('div'),t=new Date().toTimeString().slice(0,8);const i=document.createElement('i');i.textContent='['+t+']';d.append(i,msg);$('tl').appendChild(d);$('tl').scrollTop=1e9}
+function status(s,cls){$('st').textContent=s;$('dot').className='dot '+(cls||'')}
+function strip(t){return (t||'').replace(/```\w*\n?/g,'').replace(/\*\*/g,'').trim()}
+function parse(t){
+  const re=/^\s*(?:#+\s*)?\*{0,2}([A-Za-z][A-Za-z &]{4,})\*{0,2}\s*$/gm,marks=[];let m;
+  while((m=re.exec(t)))marks.push({k:m[1].trim().toUpperCase(),s:m.index,e:re.lastIndex});
+  const sec={};marks.forEach((x,i)=>sec[x.k]=t.slice(x.e,i+1<marks.length?marks[i+1].s:t.length).trim());
+  const c=t.match(/```(\w*)\n([\s\S]*?)```/);
+  return{sec,lang:c?c[1].toLowerCase():'',code:c?c[2].replace(/\s+$/,''):'',full:t}
 }
-function add(role,text){const m=el('div','msg '+role);if(role==='user')m.textContent=text;else render(m,text);log.appendChild(m);log.scrollTop=log.scrollHeight;return m}
-
-async function go(){
-  const q=inp.value.trim();if(!q||busy)return;
-  inp.value='';busy=true;send.disabled=true;st.textContent='Forging…';
-  turns.push({role:'user',content:q});add('user',q);
-  const out=add('assistant','Thinking…');
-  const msgs=turns;
+function setBody(id,txt,ph){const e=$(id);e.textContent=txt||ph;e.classList.toggle('empty',!txt)}
+function showCode(){
+  const box=$('code');box.textContent='';
+  let txt,isCode=false;
+  if(view==='Script'){txt=data.code;isCode=!!txt;if(!txt)txt=data.full?'No code block in this answer. See the Full answer tab.':''}
+  else if(view==='Usage'){txt=['USAGE','DEPENDENCIES','LOGGING LOCATIONS','ERROR HANDLING'].filter(k=>data.sec[k]).map(k=>k+'\n'+strip(data.sec[k])).join('\n\n')||'No usage notes in this answer.'}
+  else txt=strip(data.full)||'';
+  if(!txt){const d=document.createElement('div');d.className='empty';d.textContent='Nothing here yet. Describe a task and click Synthesize script.';box.appendChild(d);box.className='';return}
+  box.className=isCode?'':'txt';
+  if(isCode)txt.split('\n').forEach(l=>{const s=document.createElement('span');s.className='l';s.textContent=l||' ';box.appendChild(s)});
+  else box.textContent=txt;
+  $('m1').textContent=isCode?'Code ready: '+txt.split('\n').length+' lines':'Notes';
+  $('m2').textContent=isCode?(data.lang||prefs.lang):view;
+}
+function tabs(){
+  const t=$('tabs');t.textContent='';
+  [['Script','terminal'],['Usage','menu_book'],['Full answer','description']].forEach(([n,ic])=>{
+    const b=document.createElement('button');b.className='tab'+(n===view?' on':'');
+    const i=document.createElement('span');i.className='mi';i.textContent=ic;b.append(i,n);b.onclick=()=>{view=n;tabs();showCode()};t.appendChild(b)});
+}
+function fill(){
+  const s=data.sec;
+  setBody('b-sum',strip(s['SOLUTION SUMMARY']),'The summary of your solution shows here.');
+  setBody('b-build',strip(s['BUILD EXECUTABLE']),'Build commands show here.');
+  setBody('b-sec',strip(s['SECURITY CONSIDERATIONS']),'Security notes show here.');
+  setBody('b-roll',strip(s['ROLLBACK PLAN']),'Recovery steps show here.');
+  $('p1').textContent=data.lang?data.lang:prefs.lang;$('p2').textContent=prefs.pack;
+}
+async function run(){
+  const q=$('q').value.trim();if(!q||busy)return;
+  busy=true;$('go').disabled=true;status('Forging…','busy');
+  const msg=q+'\n\n(Preferences: language '+prefs.lang+'; packaging '+prefs.pack+'; target platform '+prefs.plat+'.)';
+  turns.push({role:'user',content:msg});if(turns.length>20)turns=turns.slice(-20);note('Request sent: '+q.slice(0,70));
   try{
-    const r=await fetch(API_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:msgs})});
-    if(!r.ok)throw {code:r.status===429?'rate_limited':'error'};
-    const res=await r.json();
-    render(out,res.text);turns.push({role:'assistant',content:res.text});
+    const r=await fetch(API_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:turns})});
+    if(!r.ok){let m='';try{m=(await r.json()).error||''}catch(_){}throw new Error('HTTP '+r.status+(m?' - '+m:''))}
+    const res=await r.json();turns.push({role:'assistant',content:res.text});
+    data=parse(res.text);note('Answer received ('+res.text.length+' characters)');
+    const found=Object.keys(data.sec).length;note(found?'Sections found: '+found:'Follow-up answer (no sections)');
+    view=data.code?'Script':'Full answer';tabs();fill();showCode();status('Ready');
   }catch(e){
-    turns.pop();out.className='msg err';
-    out.textContent=e&&e.code==='not_granted'?'The agent is not available right now.':e&&e.code==='rate_limited'?'Rate limited. Please wait a moment and try again.':'Something went wrong. Please try again.';
+    turns.pop();note('Error: '+(e&&e.message||'unknown'));status('Error','err');
+    if(/429/.test(e&&e.message))note('Rate limit reached. Wait a minute and try again.');
   }
-  busy=false;send.disabled=false;st.textContent='Ready';
+  busy=false;$('go').disabled=false;
 }
-send.onclick=go;
-inp.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();go()}});
-add('assistant','Hi, I\'m ScriptForge. Tell me what you want automated, plus your OS or environment if you know it, and I\'ll build the script, EXE steps, security review and rollback plan.');
-dl={save:async({filename,data})=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([data],{type:'text/plain'}));a.download=filename;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500)}};
+function save(name,txt){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([txt],{type:'text/plain'}));a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500)}
+$('go').onclick=run;
+$('q').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();run()}});
+$('q').addEventListener('input',function(){this.style.height='auto';this.style.height=Math.min(this.scrollHeight,130)+'px'});
+$('cp').onclick=()=>{const t=data.code||data.full;if(t&&navigator.clipboard)navigator.clipboard.writeText(t).then(()=>note('Copied to clipboard')).catch(()=>{})};
+const dl=()=>{if(data.code)save('script.'+(EXT[data.lang]||'txt'),data.code);else if(data.full)save('answer.txt',data.full)};
+$('dl').onclick=dl;$('exp').onclick=dl;
+$('new').onclick=()=>{turns=[];data={sec:{},code:'',lang:'',full:''};view='Script';$('q').value='';tabs();fill();showCode();$('m1').textContent='Waiting for a task';$('m2').textContent='—';$('tl').textContent='';note('New pipeline started');status('Ready')};
+document.querySelectorAll('aside nav a').forEach(a=>a.addEventListener('click',()=>{document.querySelectorAll('aside nav a').forEach(x=>x.classList.remove('on'));a.classList.add('on')}));
+tabs();note('Studio ready. Describe a task to begin.');
+
+/* 3D core in the summary card */
+(function(){
+  if(!window.THREE)return;let rd;
+  try{rd=new THREE.WebGLRenderer({canvas:$('core'),antialias:true,alpha:true})}catch(e){return}
+  rd.setPixelRatio(Math.min(devicePixelRatio,2));
+  const sc=new THREE.Scene(),cam=new THREE.PerspectiveCamera(45,1,.1,50);cam.position.z=6;
+  const g=new THREE.Group();sc.add(g);const geo=new THREE.IcosahedronGeometry(1.5,1);
+  const wire=new THREE.LineSegments(new THREE.EdgesGeometry(geo),new THREE.LineBasicMaterial({color:0x00AEBB}));g.add(wire);
+  const inner=new THREE.Mesh(new THREE.IcosahedronGeometry(.6,0),new THREE.MeshBasicMaterial({color:0xE8E4D3,wireframe:true}));g.add(inner);
+  const ring=new THREE.Mesh(new THREE.TorusGeometry(2.3,.015,8,120),new THREE.MeshBasicMaterial({color:0x00AEBB}));ring.rotation.x=1.2;g.add(ring);
+  function fit(){const w=$('core').clientWidth,h=$('core').clientHeight;rd.setSize(w,h,false);cam.aspect=w/h;cam.updateProjectionMatrix()}
+  fit();addEventListener('resize',fit);
+  const still=matchMedia('(prefers-reduced-motion:reduce)').matches;let t=0,sp=1;
+  (function f(){sp+=((busy?6:1)-sp)*.05;t+=.006*sp;g.rotation.y=t;g.rotation.x=Math.sin(t*.5)*.4;inner.rotation.x=-t*2;ring.rotation.z=t;
+    wire.material.color.setHex(busy?0xE8E4D3:0x00AEBB);rd.render(sc,cam);if(!still)requestAnimationFrame(f)})();
+})();
 </script>
 </body>
 </html>

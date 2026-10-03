@@ -4,6 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#031211">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'unsafe-inline' 'self'; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src 'self' https://scriptforge-api.janmejay-crazzy.workers.dev; img-src 'self' data:; frame-ancestors 'none';">
+<meta name="referrer" content="no-referrer">
 <title>ScriptForge AI – Automation Studio</title>
 <meta name="description" content="ScriptForge AI – generate automation scripts for PowerShell, Python, Bash, Azure CLI and Terraform.">
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300..800&family=JetBrains+Mono:wght@400..700&family=Material+Symbols+Outlined:wght@300..500&display=swap" rel="stylesheet">
@@ -79,10 +81,13 @@ textarea::placeholder{color:var(--dim)}
 .ct{display:flex;align-items:center;gap:8px;font-weight:600;font-size:15px;margin-bottom:8px}.ct .mi{color:var(--pri)}
 .body{font-size:12.5px;color:var(--mut);white-space:pre-wrap;overflow-wrap:anywhere;max-height:210px;overflow:auto}
 .body.empty{color:var(--dim)}
-#core{width:100%;height:130px;display:block;margin:6px 0 10px;border:1px solid var(--line);border-radius:10px;background:var(--bg)}
-.pills{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:6px}
-.pills div{padding:8px 10px;border:1px solid var(--line);border-radius:9px;background:var(--bg)}
-.pills small{display:block;font:10px "JetBrains Mono",monospace;color:var(--dim);text-transform:uppercase}.pills b{font-size:13px;font-weight:500;color:var(--pri)}
+/* CSS core — replaced Three.js to remove CDN supply-chain risk */
+.core-wrap{width:100%;height:130px;display:flex;align-items:center;justify-content:center;margin:6px 0 10px}
+.core-ring{width:90px;height:90px;border-radius:50%;border:2px solid transparent;border-top-color:var(--pri);border-right-color:rgba(0,174,187,.35);animation:spin 1.6s linear infinite;position:relative}
+.core-ring::before{content:"";position:absolute;inset:6px;border-radius:50%;border:2px solid transparent;border-bottom-color:var(--pri);border-left-color:rgba(0,174,187,.35);animation:spin 2.4s linear infinite reverse}
+.core-ring::after{content:"";position:absolute;inset:16px;border-radius:50%;background:radial-gradient(circle,var(--pri) 0%,transparent 70%);opacity:.25;animation:pulse 2s ease-in-out infinite alternate}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pulse{to{opacity:.5;transform:scale(1.15)}}
 @media(max-width:1100px){.grid{grid-template-columns:1fr}}
 @media(max-width:900px){aside{display:none}main{margin-left:0;padding:76px 12px 30px}.who,.tag{display:none}.prow{flex-direction:column}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
@@ -117,7 +122,7 @@ textarea::placeholder{color:var(--dim)}
 <div class="prow">
 <div class="pin"><span class="mi" style="color:var(--pri)">auto_awesome</span>
 <div style="flex:1"><label for="q">Describe the automation you need</label>
-<textarea id="q" rows="1" placeholder="e.g. Create 50 Azure AD users from a CSV and email me a report"></textarea></div></div>
+<textarea id="q" rows="1" maxlength="2000" placeholder="e.g. Create 50 Azure AD users from a CSV and email me a report"></textarea></div></div>
 <button class="btn pri" id="go" style="justify-content:center;padding:0 22px"><span class="mi">bolt</span>Synthesize script</button>
 </div>
 <div class="rec"><span class="mono" style="font-size:11px;color:var(--dim)">Recipes</span><span id="chips" style="display:flex;gap:8px"></span></div>
@@ -141,7 +146,7 @@ textarea::placeholder{color:var(--dim)}
 
 <div class="col">
 <div class="card"><div class="ct"><span class="mi">account_tree</span>Solution summary</div>
-<canvas id="core"></canvas>
+<div class="core-wrap"><div class="core-ring"></div></div>
 <div class="pills"><div><small>Language</small><b id="p1">—</b></div><div><small>Packaging</small><b id="p2">—</b></div></div>
 <div class="body empty" id="b-sum">The summary of your solution shows here.</div></div>
 <div class="card" id="c-build"><div class="ct"><span class="mi">inventory_2</span>Build executable</div><div class="body empty" id="b-build">Build commands show here.</div></div>
@@ -151,9 +156,9 @@ textarea::placeholder{color:var(--dim)}
 </div>
 </main>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
-const API_URL='https://scriptforge-api.janmejay-crazzy.workers.dev'; // your Worker URL
+/* All application logic — no external scripts, no CDN dependencies */
+const API_URL='https://scriptforge-api.janmejay-crazzy.workers.dev';
 const EXT={powershell:'ps1',ps1:'ps1',python:'py',py:'py',bash:'sh',sh:'sh',batch:'bat',bat:'bat',terraform:'tf',hcl:'tf',yaml:'yml',yml:'yml',json:'json',javascript:'js',js:'js',vbscript:'vbs',vbs:'vbs'};
 const $=id=>document.getElementById(id);
 const prefs={lang:'PowerShell',pack:'Self-contained EXE',plat:'Windows'};
@@ -217,8 +222,11 @@ async function run(){
     const found=Object.keys(data.sec).length;note(found?'Sections found: '+found:'Follow-up answer (no sections)');
     view=data.code?'Script':'Full answer';tabs();fill();showCode();status('Ready');
   }catch(e){
-    turns.pop();note('Error: '+(e&&e.message||'unknown'));status('Error','err');
-    if(/429/.test(e&&e.message))note('Rate limit reached. Wait a minute and try again.');
+    turns.pop();
+    /* Generic error message — never leak raw exception details to the log */
+    const isRate=/429/.test(e&&e.message);
+    note(isRate?'Rate limit reached. Wait a minute and try again.':'Request failed. Check the API endpoint and try again.');
+    status('Error','err');
   }
   busy=false;$('go').disabled=false;
 }
@@ -226,29 +234,12 @@ function save(name,txt){const a=document.createElement('a');a.href=URL.createObj
 $('go').onclick=run;
 $('q').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();run()}});
 $('q').addEventListener('input',function(){this.style.height='auto';this.style.height=Math.min(this.scrollHeight,130)+'px'});
-$('cp').onclick=()=>{const t=data.code||data.full;if(t&&navigator.clipboard)navigator.clipboard.writeText(t).then(()=>note('Copied to clipboard')).catch(()=>{})};
+$('cp').onclick=()=>{const t=data.code||data.full;if(t&&navigator.clipboard)navigator.clipboard.writeText(t).then(()=>note('Copied to clipboard')).catch(()=>note('Clipboard access denied — copy manually'))};
 const dl=()=>{if(data.code)save('script.'+(EXT[data.lang]||'txt'),data.code);else if(data.full)save('answer.txt',data.full)};
 $('dl').onclick=dl;$('exp').onclick=dl;
 $('new').onclick=()=>{turns=[];data={sec:{},code:'',lang:'',full:''};view='Script';$('q').value='';tabs();fill();showCode();$('m1').textContent='Waiting for a task';$('m2').textContent='—';$('tl').textContent='';note('New pipeline started');status('Ready')};
 document.querySelectorAll('aside nav a').forEach(a=>a.addEventListener('click',()=>{document.querySelectorAll('aside nav a').forEach(x=>x.classList.remove('on'));a.classList.add('on')}));
 tabs();note('Studio ready. Describe a task to begin.');
-
-/* 3D core in the summary card */
-(function(){
-  if(!window.THREE)return;let rd;
-  try{rd=new THREE.WebGLRenderer({canvas:$('core'),antialias:true,alpha:true})}catch(e){return}
-  rd.setPixelRatio(Math.min(devicePixelRatio,2));
-  const sc=new THREE.Scene(),cam=new THREE.PerspectiveCamera(45,1,.1,50);cam.position.z=6;
-  const g=new THREE.Group();sc.add(g);const geo=new THREE.IcosahedronGeometry(1.5,1);
-  const wire=new THREE.LineSegments(new THREE.EdgesGeometry(geo),new THREE.LineBasicMaterial({color:0x00AEBB}));g.add(wire);
-  const inner=new THREE.Mesh(new THREE.IcosahedronGeometry(.6,0),new THREE.MeshBasicMaterial({color:0xE8E4D3,wireframe:true}));g.add(inner);
-  const ring=new THREE.Mesh(new THREE.TorusGeometry(2.3,.015,8,120),new THREE.MeshBasicMaterial({color:0x00AEBB}));ring.rotation.x=1.2;g.add(ring);
-  function fit(){const w=$('core').clientWidth,h=$('core').clientHeight;rd.setSize(w,h,false);cam.aspect=w/h;cam.updateProjectionMatrix()}
-  fit();addEventListener('resize',fit);
-  const still=matchMedia('(prefers-reduced-motion:reduce)').matches;let t=0,sp=1;
-  (function f(){sp+=((busy?6:1)-sp)*.05;t+=.006*sp;g.rotation.y=t;g.rotation.x=Math.sin(t*.5)*.4;inner.rotation.x=-t*2;ring.rotation.z=t;
-    wire.material.color.setHex(busy?0xE8E4D3:0x00AEBB);rd.render(sc,cam);if(!still)requestAnimationFrame(f)})();
-})();
 </script>
 </body>
 </html>

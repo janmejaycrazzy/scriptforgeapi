@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ScriptForge AI – Automation Architect</title>
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--ink:#14181f;--mut:#5b6472;--line:#dfe3e9;--acc:#0a7cff;--accink:#fff;--code:#0f1420;--codeink:#e6edf7;--user:#e8f1ff;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0b0e14;--card:#131824;--ink:#e8ecf3;--mut:#94a0b3;--line:#232b3b;--acc:#4da3ff;--accink:#06101f;--code:#070a10;--codeink:#e6edf7;--user:#16263f}}
+:root[data-theme="dark"]{--bg:#0b0e14;--card:#131824;--ink:#e8ecf3;--mut:#94a0b3;--line:#232b3b;--acc:#4da3ff;--accink:#06101f;--code:#070a10;--codeink:#e6edf7;--user:#16263f}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+a{color:var(--acc)}
+.wrap{max-width:980px;margin:0 auto;padding:0 20px}
+nav{display:flex;justify-content:space-between;align-items:center;padding:18px 0}
+.logo{font-weight:700;letter-spacing:-.02em}.logo b{color:var(--acc)}
+nav a{margin-left:18px;color:var(--mut);text-decoration:none;font-size:14px}
+.hero{padding:36px 0 26px}
+.hero h1{font-size:clamp(30px,5vw,48px);line-height:1.1;margin:0 0 12px;letter-spacing:-.03em}
+.hero p{color:var(--mut);max-width:620px;margin:0}
+.feat{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:26px 0}
+.feat div{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px}
+.feat h3{margin:0 0 4px;font-size:15px}.feat p{margin:0;color:var(--mut);font-size:13.5px}
+.agent{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;margin-bottom:28px}
+.ahead{padding:12px 16px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;font-weight:600}
+.ahead span{font-weight:400;color:var(--mut);font-size:13px}
+#log{height:min(520px,60vh);overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px}
+.msg{max-width:100%;padding:10px 14px;border-radius:12px;border:1px solid var(--line);white-space:pre-wrap;overflow-wrap:anywhere}
+.msg.user{background:var(--user);align-self:flex-end;max-width:85%}
+.msg.err{color:#c2362b}
+.cb{margin:10px 0;border-radius:10px;overflow:hidden;background:var(--code);white-space:normal}
+.cbh{display:flex;justify-content:space-between;align-items:center;padding:6px 10px;font-size:12px;color:#9fb0c8;border-bottom:1px solid #222c40}
+.cbh button{margin-left:6px}
+.cb pre{margin:0;padding:12px;overflow-x:auto;color:var(--codeink);font:13px/1.5 ui-monospace,Menlo,Consolas,monospace;white-space:pre}
+button{font:inherit;cursor:pointer}
+.sm{background:transparent;color:#cfe0ff;border:1px solid #33415e;border-radius:6px;padding:2px 8px;font-size:12px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;padding:0 16px 12px}
+.chip{background:transparent;border:1px solid var(--line);color:var(--ink);border-radius:99px;padding:5px 12px;font-size:13px}
+.chip:hover{border-color:var(--acc)}
+.bar{display:flex;gap:8px;padding:12px 16px;border-top:1px solid var(--line)}
+textarea{flex:1;resize:none;min-height:46px;max-height:140px;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:10px;padding:10px 12px;font:inherit}
+#send{background:var(--acc);color:var(--accink);border:0;border-radius:10px;padding:0 20px;font-weight:600}
+#send:disabled{opacity:.5;cursor:default}
+footer{color:var(--mut);font-size:13px;padding:6px 0 30px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<nav><div class="logo">Script<b>Forge</b> AI</div><div><a href="#agent">Agent</a><a href="#how">How it works</a></div></nav>
+<section class="hero">
+<h1>Describe the task.<br>Get a production-ready script.</h1>
+<p>An automation architect for PowerShell, Python, Bash, Azure CLI and Terraform. It returns source code, an EXE build command, logging, security notes and a rollback plan, with no programming needed.</p>
+</section>
+<section class="feat" id="how">
+<div><h3>Picks the language</h3><p>PowerShell, Python, Bash, Terraform or Ansible, whichever fits.</p></div>
+<div><h3>Enterprise quality</h3><p>Retries, logging, validation and least-privilege defaults.</p></div>
+<div><h3>Ships as an EXE</h3><p>PyInstaller, PS2EXE and pkg build commands included.</p></div>
+<div><h3>Safe to deploy</h3><p>Security review and a rollback plan with every answer.</p></div>
+</section>
+
+<section class="agent" id="agent">
+<div class="ahead">ScriptForge Agent <span id="status">Ready</span></div>
+<div id="log"></div>
+<div class="chips" id="chips"></div>
+<div class="bar">
+<textarea id="in" rows="1" placeholder="e.g. Create 50 Azure AD users from a CSV and email me a report"></textarea>
+<button id="send">Forge</button>
+</div>
+</section>
+<footer>Always test generated scripts in a non-production environment first.</footer>
+</div>
+
+<script>
+const API_URL='scriptforge-api.janmejay-crazzy.workers.dev'; // <-- paste your Worker URL here
+const EXT={powershell:'ps1',ps1:'ps1',python:'py',py:'py',bash:'sh',sh:'sh',batch:'bat',bat:'bat',terraform:'tf',hcl:'tf',yaml:'yml',yml:'yml',json:'json',javascript:'js',js:'js',vbscript:'vbs',vbs:'vbs'};
+const log=document.getElementById('log'),inp=document.getElementById('in'),send=document.getElementById('send'),st=document.getElementById('status');
+const turns=[];let busy=false,sample=null,dl=null;
+const chips=['Bulk-create Azure AD users from a CSV','Backup SQL databases nightly and prune old files','Disk space monitor that emails alerts (Windows)','Silent-install software on many PCs'];
+chips.forEach(t=>{const b=document.createElement('button');b.className='chip';b.textContent=t;b.onclick=()=>{inp.value=t;go()};document.getElementById('chips').appendChild(b)});
+
+function el(tag,cls,txt){const e=document.createElement(tag);if(cls)e.className=cls;if(txt!=null)e.textContent=txt;return e}
+function render(node,text){
+  node.textContent='';
+  const parts=text.split(/```/);
+  parts.forEach((p,i)=>{
+    if(i%2===0){if(p.trim()||i===0){const s=el('span',null,p.replace(/\*\*(.+?)\*\*/g,'$1'));node.appendChild(s)}}
+    else{
+      const nl=p.indexOf('\n'),lang=(nl>-1?p.slice(0,nl):p).trim().toLowerCase(),code=nl>-1?p.slice(nl+1):'';
+      const box=el('div','cb'),h=el('div','cbh'),r=el('span',null,lang||'code'),act=el('span');
+      const cp=el('button','sm','Copy'),sv=el('button','sm','Download');
+      cp.onclick=()=>{navigator.clipboard&&navigator.clipboard.writeText(code).then(()=>{cp.textContent='Copied';setTimeout(()=>cp.textContent='Copy',1200)}).catch(()=>{})};
+      sv.onclick=async()=>{if(!dl){return}try{await dl.save({filename:'script.'+(EXT[lang]||'txt'),data:code})}catch(e){}};
+      act.appendChild(cp);if(dl)act.appendChild(sv);h.append(r,act);
+      box.append(h,el('pre',null,code));node.appendChild(box);
+    }
+  });
+}
+function add(role,text){const m=el('div','msg '+role);if(role==='user')m.textContent=text;else render(m,text);log.appendChild(m);log.scrollTop=log.scrollHeight;return m}
+
+async function go(){
+  const q=inp.value.trim();if(!q||busy)return;
+  inp.value='';busy=true;send.disabled=true;st.textContent='Forging…';
+  turns.push({role:'user',content:q});add('user',q);
+  const out=add('assistant','Thinking…');
+  const msgs=turns;
+  try{
+    const r=await fetch(API_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:msgs})});
+    if(!r.ok)throw {code:r.status===429?'rate_limited':'error'};
+    const res=await r.json();
+    render(out,res.text);turns.push({role:'assistant',content:res.text});
+  }catch(e){
+    turns.pop();out.className='msg err';
+    out.textContent=e&&e.code==='not_granted'?'The agent is not available right now.':e&&e.code==='rate_limited'?'Rate limited. Please wait a moment and try again.':'Something went wrong. Please try again.';
+  }
+  busy=false;send.disabled=false;st.textContent='Ready';
+}
+send.onclick=go;
+inp.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();go()}});
+add('assistant','Hi, I\'m ScriptForge. Tell me what you want automated, plus your OS or environment if you know it, and I\'ll build the script, EXE steps, security review and rollback plan.');
+dl={save:async({filename,data})=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([data],{type:'text/plain'}));a.download=filename;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500)}};
+</script>
+</body>
+</html>

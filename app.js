@@ -1,7 +1,9 @@
 /* ScriptForge AI — external script (CSP-compliant: script-src 'self') */
 /* No CDN dependencies, no inline eval */
 const API_URL = 'https://scriptforge-api.janmejay-crazzy.workers.dev';
-const API_KEY = ''; /* set via header, not here — see comment in worker.js */
+// API_KEY is injected at build-time or via config — NEVER commit it to source.
+// Set via your build pipeline or edit this value locally for dev.
+const API_KEY = '';
 const MAX_TURNS = 20;
 const MAX_MSG_LEN = 4000;
 

@@ -1,0 +1,24 @@
+name = "scriptforge-worker"
+main = "worker.js"
+compatibility_date = "2024-01-01"
+
+# ---- REQUIRED secrets (set via `wrangler secret put`, never commit values) ----
+#   HF_TOKEN           — Hugging Face Router token (Bearer auth)
+#   REQUIRED_SECRET    — shared API key sent by client as x-api-key header
+
+# ---- CORS origin ----
+#   Empty = allow all origins (with Vary: Origin).
+#   Set to your domain for strict CORS, e.g. "https://your-site.com"
+allowed_origins = ["*"]
+
+# ---- KV namespace for rate limiting (create first) ----
+#   wrangler kv namespace create RATE_LIMITS
+kv_namespaces = [
+  { binding = "RATE_LIMITS", id = "<YOUR_KV_NAMESPACE_ID>" }
+]
+
+# ---- Optional overrides ----
+# vars = {
+#   ALLOWED_ORIGIN = "https://your-site.com",
+#   MODEL = "Qwen/Qwen2.5-72B-Instruct"
+# }

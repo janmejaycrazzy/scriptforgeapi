@@ -12,7 +12,7 @@ compatibility_date = "2024-01-01"
 # ---- KV namespace for rate limiting (create first) ----
 #   wrangler kv namespace create RATE_LIMITS
 kv_namespaces = [
-  { binding = "RATE_LIMITS", id = "<YOUR_KV_NAMESPACE_ID>" }
+  { binding = "RATE_LIMITS", id = "dd2e57508c654c3f8c96567d92a156c8" }
 ]
 
 # ---- Optional overrides ----

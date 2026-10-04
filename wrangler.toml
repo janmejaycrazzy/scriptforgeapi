@@ -1,5 +1,5 @@
 name = "scriptforge-worker"
-main = "index.js"
+main = "worker.js"
 compatibility_date = "2024-01-01"
 
 # ---- REQUIRED secrets (set via `wrangler secret put`, never commit values) ----

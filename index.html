@@ -5,80 +5,104 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#031211">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src 'self' https://scriptforge-api.janmejay-crazzy.workers.dev; img-src 'self' data:; frame-ancestors 'none';">
-<meta http-equiv="Strict-Transport-Security" content="max-age=31536000; includeSubDomains; preload">
 <meta http-equiv="X-Content-Type-Options" content="nosniff">
 <meta http-equiv="X-Frame-Options" content="DENY">
 <meta http-equiv="Permissions-Policy" content="geolocation=(), microphone=(), camera=()">
 <meta name="referrer" content="no-referrer">
 <title>ScriptForge AI – Automation Studio</title>
-<meta name="description" content="ScriptForge AI – generate automation scripts for PowerShell, Python, Bash, Azure CLI and Terraform.">
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300..800&family=JetBrains+Mono:wght@400..700&family=Material+Symbols+Outlined:wght@300..500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+
 <header>
-<div class="brand"><div class="ic"><span class="mi">smart_toy</span></div>ScriptForge AI<span class="tag">ARCHITECT</span></div>
-<div class="hr">
-<button class="btn" id="exp"><span class="mi">archive</span><span>Export script</span></button>
-<button class="btn pri" id="new"><span class="mi">add_circle</span><span>New pipeline</span></button>
-<div class="who"><div class="av"><span class="mi">person</span></div><div><b>Janmejay Mohapatra</b><small>IT Infrastructure Lead</small></div></div>
-</div>
+  <div class="brand">
+    <div class="ic"><span class="mi">smart_toy</span></div>
+    ScriptForge AI<span class="tag">ARCHITECT</span>
+  </div>
+  <div class="hr">
+    <button class="btn" id="exp"><span class="mi">archive</span><span>Export script</span></button>
+    <button class="btn pri" id="new"><span class="mi">add_circle</span><span>New pipeline</span></button>
+    <div class="who">
+      <div class="av"><span class="mi">person</span></div>
+      <div><b>Janmejay Mohapatra</b><small>IT Infrastructure Lead</small></div>
+    </div>
+  </div>
 </header>
 
 <aside>
-<div>
-<div class="env"><div class="cap" style="margin:0 0 6px">Agent</div><b><span class="dot" id="dot"></span><span id="st">Ready</span></b></div>
-<div class="cap" style="margin-top:16px">Workspace</div>
-<nav>
-<a class="on" href="#top"><span class="mi">terminal</span>Automation Studio</a>
-<a href="#c-build"><span class="mi">package_2</span>Build &amp; Package</a>
-<a href="#c-sec"><span class="mi">security</span>Security Review</a>
-<a href="#c-roll"><span class="mi">history</span>Rollback Plan</a>
-</nav>
-</div>
-<div class="env" style="margin:0"><div class="cap" style="margin:0 0 4px">Note</div><span style="font-size:12px;color:var(--mut)">Review every generated script and test it outside production first.</span></div>
+  <div>
+    <div class="env">
+      <div class="cap" style="margin:0 0 6px">Agent</div>
+      <b><span class="dot" id="dot"></span><span id="st">Ready</span></b>
+    </div>
+    <div class="cap" style="margin-top:16px">Workspace</div>
+    <nav>
+      <a class="on" href="#top"><span class="mi">terminal</span>Automation Studio</a>
+      <a href="#c-build"><span class="mi">package_2</span>Build &amp; Package</a>
+      <a href="#c-sec"><span class="mi">security</span>Security Review</a>
+      <a href="#c-roll"><span class="mi">history</span>Rollback Plan</a>
+    </nav>
+  </div>
+  <div class="env" style="margin:0">
+    <div class="cap" style="margin:0 0 4px">Note</div>
+    <span style="font-size:12px;color:var(--mut)">Review every generated script and test it outside production first.</span>
+  </div>
 </aside>
 
 <main id="top">
-<section class="card hero">
-<div class="prow">
-<div class="pin"><span class="mi" style="color:var(--pri)">auto_awesome</span>
-<div style="flex:1"><label for="q">Describe the automation you need</label>
-<textarea id="q" rows="1" maxlength="2000" placeholder="e.g. Create 50 Azure AD users from a CSV and email me a report"></textarea></div></div>
-<button class="btn pri" id="go" style="justify-content:center;padding:0 22px"><span class="mi">bolt</span>Synthesize script</button>
-</div>
-<div class="rec"><span class="mono" style="font-size:11px;color:var(--dim)">Recipes</span><span id="chips" style="display:flex;gap:8px"></span></div>
-<div class="opts">
-<div class="seg" data-k="lang"><button class="on">PowerShell</button><button>Batch</button><button>Python</button><button>Bash</button><button>Azure CLI</button><button>Terraform</button></div>
-<div class="seg" data-k="pack"><button>Source only</button><button class="on">Self-contained EXE</button><button>MSI installer</button></div>
-<div class="seg" data-k="plat"><button class="on">Windows</button><button>Ubuntu</button><button>RHEL</button></div>
-</div>
-</section>
+  <section class="card hero">
+    <div class="prow">
+      <div class="pin">
+        <span class="mi" style="color:var(--pri)">auto_awesome</span>
+        <div class="pin-body">
+          <label for="q">Describe the automation you need</label>
+          <input type="text" id="q" maxlength="2000" placeholder="e.g. Create 50 Azure AD users from a CSV and email me a report" autocomplete="off">
+        </div>
+      </div>
+      <button class="btn pri" id="go"><span class="mi">bolt</span>Synthesize script</button>
+    </div>
+    <div class="opts">
+      <div class="seg" data-k="lang">
+        <button class="on">PowerShell</button><button>Batch</button><button>Python</button><button>Bash</button><button>Azure CLI</button><button>Terraform</button>
+      </div>
+      <div class="seg" data-k="pack">
+        <button>Source only</button><button class="on">Self-contained EXE</button><button>MSI installer</button>
+      </div>
+      <div class="seg" data-k="plat">
+        <button class="on">Windows</button><button>Ubuntu</button><button>RHEL</button>
+      </div>
+    </div>
+  </section>
 
-<div class="grid">
-<div class="col">
-<div class="card ed">
-<div class="tabs"><div id="tabs"></div>
-<div class="tools"><button class="btn" id="cp"><span class="mi">content_copy</span>Copy</button><button class="btn pri" id="dl"><span class="mi">download</span>Download</button></div></div>
-<div class="meta"><span class="ok" id="m1">Waiting for a task</span><span id="m2">—</span></div>
-<div id="code"><div class="empty">Your script appears here. Describe a task above, choose a language and packaging, then click Synthesize script.</div></div>
-</div>
-<div class="card term"><div class="h"><span><span class="mi" style="color:var(--pri)">terminal</span> Activity log</span></div><div id="tl"></div></div>
-</div>
+  <div class="grid">
+    <div class="col">
+      <div class="card ed">
+        <div class="tabs">
+          <div id="tabs"></div>
+          <div class="tools">
+            <button class="btn" id="cp"><span class="mi">content_copy</span>Copy</button>
+            <button class="btn pri" id="dl"><span class="mi">download</span>Download</button>
+          </div>
+        </div>
+        <div class="meta"><span class="ok" id="m1">Waiting for a task</span><span id="m2">—</span></div>
+        <div id="code"><div class="empty">Your script appears here. Describe a task above, choose a language and packaging, then click Synthesize script.</div></div>
+      </div>
+      <div class="card term">
+        <div class="h"><span><span class="mi" style="color:var(--pri)">terminal</span> Activity log</span></div>
+        <div id="tl"></div>
+      </div>
+    </div>
 
-<div class="col">
-<div class="card"><div class="ct"><span class="mi">account_tree</span>Solution summary</div>
-<div class="core-wrap"><div class="core-ring"></div></div>
-<div class="pills"><div><small>Language</small><b id="p1">—</b></div><div><small>Packaging</small><b id="p2">—</b></div></div>
-<div class="body empty" id="b-sum">The summary of your solution shows here.</div></div>
-<div class="card" id="c-build"><div class="ct"><span class="mi">inventory_2</span>Build executable</div><div class="body empty" id="b-build">Build commands show here.</div></div>
-<div class="card" id="c-sec"><div class="ct"><span class="mi">security</span>Security review</div><div class="body empty" id="b-sec">Security notes show here.</div></div>
-<div class="card" id="c-roll"><div class="ct"><span class="mi">history</span>Rollback plan</div><div class="body empty" id="b-roll">Recovery steps show here.</div></div>
-</div>
-</div>
+    <div class="col">
+      <div class="card"><div class="ct"><span class="mi">account_tree</span>Solution summary</div><div class="body empty" id="b-sum">The summary of your solution shows here.</div></div>
+      <div class="card" id="c-build"><div class="ct"><span class="mi">inventory_2</span>Build executable</div><div class="body empty" id="b-build">Build commands show here.</div></div>
+      <div class="card" id="c-sec"><div class="ct"><span class="mi">security</span>Security review</div><div class="body empty" id="b-sec">Security notes show here.</div></div>
+      <div class="card" id="c-roll"><div class="ct"><span class="mi">history</span>Rollback plan</div><div class="body empty" id="b-roll">Recovery steps show here.</div></div>
+    </div>
+  </div>
 </main>
 
-<!-- CSP requires external JS -->
 <script src="app.js" defer></script>
 </body>
 </html>

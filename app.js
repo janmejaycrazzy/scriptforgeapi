@@ -3,6 +3,7 @@ const API_URL = 'https://scriptforge-api.janmejay-crazzy.workers.dev';
 const MAX_TURNS = 10;
 const MAX_INPUT = 2000;
 const RATE_LIMIT_MS = 3000;
+const REQUEST_TIMEOUT_MS = 90000; // the model can take 30s+ to answer
 
 const $ = (id) => document.getElementById(id);
 const prefs = { lang: 'PowerShell', pack: 'Self-contained EXE', plat: 'Windows' };
@@ -143,10 +144,10 @@ async function run() {
   if (turns.length > MAX_TURNS) turns = turns.slice(-MAX_TURNS);
   note('Request sent: ' + q.slice(0, 70));
 
-  try {
-    const ctrl = new AbortController();
-    const timer = setTimeout(() => ctrl.abort(), 30000);
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), REQUEST_TIMEOUT_MS);
 
+  try {
     const r = await fetch(API_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -154,11 +155,19 @@ async function run() {
       signal: ctrl.signal,
     });
 
-    clearTimeout(timer);
-
     if (!r.ok) {
-      const isRate = r.status === 429;
-      throw new Error(isRate ? 'rate-limited' : 'HTTP ' + r.status);
+      // Read the Worker's real error message so failures are not hidden
+      let detail = '';
+      try {
+        const j = await r.json();
+        detail = j.error || '';
+        if (Array.isArray(j.blockedPatterns) && j.blockedPatterns.length) {
+          detail += ' [' + j.blockedPatterns.join(', ') + ']';
+        }
+      } catch (_) { /* body was not JSON */ }
+      const err = new Error(detail || 'HTTP ' + r.status);
+      err.status = r.status;
+      throw err;
     }
 
     const res = await r.json();
@@ -173,10 +182,15 @@ async function run() {
     status('Ready');
   } catch (e) {
     turns.pop();
+    console.error('ScriptForge request failed:', e);
     if (e.name === 'AbortError') note('Request timed out. Try again.');
-    else if (e.message === 'rate-limited') note('Rate limit reached. Wait a moment and try again.');
-    else note('Request failed. Check your connection and try again.');
+    else if (e.status === 429) note('Rate limit reached. Wait a moment and try again.');
+    else if (e.status === 403) note('Blocked by the safety filter: ' + e.message + '. Rephrase the task or try another language.');
+    else if (e.status) note('Server error ' + e.status + ': ' + e.message);
+    else note('Request failed: ' + (e.message || 'network error'));
     status('Error', 'err');
+  } finally {
+    clearTimeout(timer);
   }
 
   busy = false;
